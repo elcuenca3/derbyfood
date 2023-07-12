@@ -11,7 +11,7 @@ public class CambiarEscena : MonoBehaviour
 	}
 	public void LoadSceneinGame1()
 	{
-		SceneManager.LoadScene("SampleScene");
+		SceneManager.LoadScene("mapaPrueba");
 	}
 	public void LoadSceneinGame2()
 	{
@@ -20,9 +20,5 @@ public class CambiarEscena : MonoBehaviour
 	public void BackSceneinGame1()
 	{
 		SceneManager.LoadScene("Interfaz");
-	}
-	public void BackSceneinGame2()
-	{
-		SceneManager.LoadScene("seleccionCarro");
 	}
 }	

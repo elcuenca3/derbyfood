@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/seleccionMapa.unity
     guid: ad030dfbf7d7cfe4da95f5a56c2164a8
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/mapaPrueba.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
