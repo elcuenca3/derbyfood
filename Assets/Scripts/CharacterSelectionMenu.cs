@@ -9,7 +9,7 @@ public class CharacterSelectionMenu : MonoBehaviour
     public GameObject[] playerObjects;
     public int selectedCharacter = 0;
 
-    public string gameScene = "mapaPrueba";
+    public string gameScene = "arenanew";
 
     private string selectedCharacterDataName = "SelectedCharacter";
 
@@ -53,6 +53,16 @@ public class CharacterSelectionMenu : MonoBehaviour
         }
         playerObjects[selectedCharacter].SetActive(true);
     }
+    public void MapaSeleccion()
+	{
+		SceneManager.LoadScene("seleccionMapa");
+	}
+
+    public void Arenanew()
+	{
+		SceneManager.LoadScene("arenanew");
+	}
+
 
     public void StartGame()
     {
