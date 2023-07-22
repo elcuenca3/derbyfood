@@ -7,8 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class tiempo : MonoBehaviour
 {
-    [SerializeField]
-    TextMeshProUGUI texto;
+    [SerializeField]TextMeshProUGUI texto;
     private float tiempoActual;
     public float tiemp = 10f;
 
@@ -32,6 +31,6 @@ public class tiempo : MonoBehaviour
     private void CambiarEscena()
     {
         // Cambiar a la siguiente escena
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("Game_over");
     }
 }

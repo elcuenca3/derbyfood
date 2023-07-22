@@ -21,4 +21,5 @@ public class CambiarEscena : MonoBehaviour
 	{
 		SceneManager.LoadScene("Interfaz");
 	}
+	
 }	
