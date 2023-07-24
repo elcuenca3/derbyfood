@@ -13,8 +13,8 @@ public class CarController : MonoBehaviour
     private float contenerdorMax;
     private float contenerdor;
     private Rigidbody rb;
-    public float MoveSpeed = 100;
-    public float MaxSpeed = 25;
+    public float MoveSpeed = 400;
+    public float MaxSpeed = 80;
     public float Drag = 0.98f;
     public float SteerAngle = 20;
     public float Traction = 1;
@@ -44,7 +44,6 @@ public class CarController : MonoBehaviour
 
     void Update()
     {
-      
         // texto.text = "" + vida;
         // Si se presiona la barra espaciadora, se detiene el carro
         if (Input.GetKeyDown(KeyCode.Space))

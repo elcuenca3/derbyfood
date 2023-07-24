@@ -1,79 +1,139 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class CarNPC : MonoBehaviour
 {
-    public Transform playerCar;
-    public float speed = 10f;
-    public float rotationSpeed = 5f;
-    public float chaseRange = 50f;
-    private Rigidbody rb;
-    private Vector3 initialPosition;
-    private bool isChasing = false;
+    public float followDistance = 50f; // Distancia a la cual el NPC comenzará a seguir al jugador
+    public float moveSpeed = 50f; // Velocidad de movimiento del NPC
+    public float rotationSpeed = 2f; // Velocidad de rotación del NPC
 
-    void Start()
+    private Transform currentTarget;
+    private Vector3 randomTarget;
+
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        initialPosition = transform.position;
+        randomTarget = GetRandomTarget(); // Obtiene un objetivo aleatorio inicial
     }
 
-    void FixedUpdate()
+    private void Update()
     {
-        // Calcula la distancia entre el vehículo NPC y el carro controlado por el jugador
-        float distanceToPlayer = Vector3.Distance(transform.position, playerCar.position);
+        // Busca el carro más cercano con la etiqueta "Player" y lo establece como el objetivo actual
+        GameObject[] playerCars = GameObject.FindGameObjectsWithTag("Player");
+        float nearestDistance = float.MaxValue;
 
-        // Verifica si el jugador está dentro del rango de persecución
-        if (distanceToPlayer <= chaseRange)
+        foreach (GameObject car in playerCars)
         {
-            isChasing = true;
+            float distanceToCar = Vector3.Distance(transform.position, car.transform.position);
 
-            // Dirección hacia la posición actual del carro controlado por el jugador
-            Vector3 direction = playerCar.position - transform.position;
-            direction.Normalize();
+            if (distanceToCar <= followDistance && distanceToCar < nearestDistance)
+            {
+                currentTarget = car.transform;
+                nearestDistance = distanceToCar;
+            }
+        }
 
-            // Movimiento hacia adelante
-            rb.MovePosition(transform.position + (direction * speed * Time.fixedDeltaTime));
+        if (currentTarget != null)
+        {
+            // El NPC sigue al objetivo
+            float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
 
-            // Rotación hacia la posición actual del carro controlado por el jugador
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            rb.MoveRotation(
-                Quaternion.Lerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime)
-            );
+            if (distanceToTarget <= followDistance)
+            {
+                // Movimiento y rotación hacia el objetivo (carro del jugador)
+                Vector3 direction = currentTarget.position - transform.position;    
+                Quaternion rotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+                transform.position += transform.forward * moveSpeed * Time.deltaTime;
+            }
         }
         else
         {
-            isChasing = false;
+            // Movimiento aleatorio por la arena
+            float distanceToRandomTarget = Vector3.Distance(transform.position, randomTarget);
 
-            // Movimiento hacia adelante
-            rb.MovePosition(transform.position + (transform.forward * speed * Time.fixedDeltaTime));
+            if (distanceToRandomTarget <= 5f)
+            {
+                randomTarget = GetRandomTarget();
+            }
 
-            // Verifica si el vehículo NPC ha alcanzado su posición inicial
-            if (Vector3.Distance(transform.position, initialPosition) <= 1f)
-            {
-                // Gira 180 grados
-                Quaternion targetRotation = Quaternion.LookRotation(-transform.forward);
-                rb.MoveRotation(
-                    Quaternion.Lerp(
-                        rb.rotation,
-                        targetRotation,
-                        rotationSpeed * Time.fixedDeltaTime
-                    )
-                );
-            }
-            else
-            {
-                // Gira hacia la posición inicial
-                Quaternion targetRotation = Quaternion.LookRotation(
-                    initialPosition - transform.position
-                );
-                rb.MoveRotation(
-                    Quaternion.Lerp(
-                        rb.rotation,
-                        targetRotation,
-                        rotationSpeed * Time.fixedDeltaTime
-                    )
-                );
-            }
+            Vector3 direction = randomTarget - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+            transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
     }
+
+    private Vector3 GetRandomTarget()
+    {
+        // Obtiene una posición aleatoria dentro de un área específica (arena)
+        float x = Random.Range(-10f, 20f);
+        float z = Random.Range(-10f, 20f);
+        return new Vector3(x, 0f, z);
+    }
+    //  void OnCollisionEnter(Collision collision)
+    // {
+    //     if (collision.gameObject.CompareTag("caer"))
+    //     {
+    //         // print("caer ENTRO");
+    //         // Invertir los controles aquí
+    //         MoveForce -= transform.forward * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
+    //         transform.position -= MoveForce * Time.deltaTime;
+    //     }
+    //     else if (collision.gameObject.CompareTag("powervelociad"))
+    //     {
+    //         // print("velocidad OBTENIDA ");
+    //         MoveSpeed = 2 * contenerdor;
+    //         MaxSpeed = 2 * contenerdor;
+    //         velociad();
+    //         Destroy(collision.gameObject);
+    //     }
+    //     else if (collision.gameObject.CompareTag("powervida"))
+    //     {
+    //         print("vida OBTENIDA ");
+    //         vida = vida + 10;
+    //         // print("vida ya curada "+vida);
+    //         Destroy(collision.gameObject);
+    //     }
+    //     else if (collision.gameObject.CompareTag("pilar"))
+    //     {
+    //         vida = vida - 10;
+    //         print("vida quitada:" + vida);
+    //     }
+    // }
+
+    // void velociad()
+    // {
+    //     counting = true;
+    // }
+    
+
+    // void OnCollisionExit(Collision collision)
+    // {
+    //     if (collision.gameObject.CompareTag("caer"))
+    //     {
+    //         // print("caer SALIO");
+    //         // Restaurar los valores originales al salir de la colisión
+    //         MoveSpeed = contenerdor;
+    //         MaxSpeed = contenerdorMax;
+    //     }
+    //     else if (collision.gameObject.CompareTag("powervelociad"))
+    //     {
+    //         // print("velocidad ");
+
+    //         Destroy(collision.gameObject);
+    //     }
+    // }
+
+    // void OnCollisionStay(Collision collision)
+    // {
+    //     if (collision.gameObject.CompareTag("caer"))
+    //     {
+    //         // print("caer DENTRO");
+    //         // Invertir los controles aquí
+    //         MoveForce -= transform.forward * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
+    //         transform.position -= MoveForce * Time.deltaTime;
+    //     }
+    // }
 }
+
