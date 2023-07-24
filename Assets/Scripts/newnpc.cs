@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class newnpc : MonoBehaviour
 {
-    public float speed = 2f; // Velocidad de movimiento del NPC
+    public float speed = 10f; // Velocidad de movimiento del NPC
     public Transform player; // Referencia al transform del jugador
 
     private void Update()

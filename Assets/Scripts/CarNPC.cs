@@ -6,7 +6,7 @@ public class CarNPC : MonoBehaviour
     public Transform playerCar;
     public float speed = 10f;
     public float rotationSpeed = 5f;
-    public float chaseRange = 10f;
+    public float chaseRange = 50f;
     private Rigidbody rb;
     private Vector3 initialPosition;
     private bool isChasing = false;
