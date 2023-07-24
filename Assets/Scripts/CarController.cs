@@ -29,6 +29,7 @@ public class CarController : MonoBehaviour
     private bool counting = false;
 
     private int vida = 100;
+    public Slider healthBar;
 
     void Start()
     {
@@ -43,6 +44,7 @@ public class CarController : MonoBehaviour
 
     void Update()
     {
+      
         // texto.text = "" + vida;
         // Si se presiona la barra espaciadora, se detiene el carro
         if (Input.GetKeyDown(KeyCode.Space))
@@ -80,6 +82,7 @@ public class CarController : MonoBehaviour
             Vector3.Lerp(MoveForce.normalized, transform.forward, Traction * Time.deltaTime)
             * MoveForce.magnitude;
         // print(tiempoActual);
+        healthBar.value = vida;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -117,6 +120,7 @@ public class CarController : MonoBehaviour
     {
         counting = true;
     }
+    
 
     void OnCollisionExit(Collision collision)
     {
