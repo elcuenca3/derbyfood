@@ -11,6 +11,11 @@ public class CarNPC : MonoBehaviour
     private Transform currentTarget;
     private Vector3 randomTarget;
 
+    private float tiempoActual;
+    public float timepower = 5f;
+    private int vida = 100;
+    private bool counting = false;
+
     private void Start()
     {
         randomTarget = GetRandomTarget(); // Obtiene un objetivo aleatorio inicial
@@ -20,6 +25,8 @@ public class CarNPC : MonoBehaviour
     {
         // Busca el carro más cercano con la etiqueta "Player" y lo establece como el objetivo actual
         GameObject[] playerCars = GameObject.FindGameObjectsWithTag("Player");
+        // GameObject[] playernpc = GameObject.FindGameObjectsWithTag("npc");
+
         float nearestDistance = float.MaxValue;
 
         foreach (GameObject car in playerCars)
@@ -33,6 +40,16 @@ public class CarNPC : MonoBehaviour
             }
         }
 
+        // foreach (GameObject car in playernpc)
+        // {
+        //     float distanceToCar = Vector3.Distance(transform.position, car.transform.position);
+
+        //     if (distanceToCar <= followDistance && distanceToCar < nearestDistance)
+        //     {
+        //         currentTarget = car.transform;
+        //         nearestDistance = distanceToCar;
+        //     }
+        // }
         if (currentTarget != null)
         {
             // El NPC sigue al objetivo
@@ -41,9 +58,13 @@ public class CarNPC : MonoBehaviour
             if (distanceToTarget <= followDistance)
             {
                 // Movimiento y rotación hacia el objetivo (carro del jugador)
-                Vector3 direction = currentTarget.position - transform.position;    
+                Vector3 direction = currentTarget.position - transform.position;
                 Quaternion rotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(
+                    transform.rotation,
+                    rotation,
+                    rotationSpeed * Time.deltaTime
+                );
                 transform.position += transform.forward * moveSpeed * Time.deltaTime;
             }
         }
@@ -59,7 +80,11 @@ public class CarNPC : MonoBehaviour
 
             Vector3 direction = randomTarget - transform.position;
             Quaternion rotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(
+                transform.rotation,
+                rotation,
+                rotationSpeed * Time.deltaTime
+            );
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
     }
@@ -71,42 +96,37 @@ public class CarNPC : MonoBehaviour
         float z = Random.Range(-10f, 20f);
         return new Vector3(x, 0f, z);
     }
-    //  void OnCollisionEnter(Collision collision)
-    // {
-    //     if (collision.gameObject.CompareTag("caer"))
-    //     {
-    //         // print("caer ENTRO");
-    //         // Invertir los controles aquí
-    //         MoveForce -= transform.forward * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
-    //         transform.position -= MoveForce * Time.deltaTime;
-    //     }
-    //     else if (collision.gameObject.CompareTag("powervelociad"))
-    //     {
-    //         // print("velocidad OBTENIDA ");
-    //         MoveSpeed = 2 * contenerdor;
-    //         MaxSpeed = 2 * contenerdor;
-    //         velociad();
-    //         Destroy(collision.gameObject);
-    //     }
-    //     else if (collision.gameObject.CompareTag("powervida"))
-    //     {
-    //         print("vida OBTENIDA ");
-    //         vida = vida + 10;
-    //         // print("vida ya curada "+vida);
-    //         Destroy(collision.gameObject);
-    //     }
-    //     else if (collision.gameObject.CompareTag("pilar"))
-    //     {
-    //         vida = vida - 10;
-    //         print("vida quitada:" + vida);
-    //     }
-    // }
 
-    // void velociad()
-    // {
-    //     counting = true;
-    // }
-    
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("caer"))
+        {
+            // print("caer ENTRO");
+            // Invertir los controles aquí
+        }
+        else if (collision.gameObject.CompareTag("powervida"))
+        {
+            print("vida OBTENIDA ");
+            vida = vida + 10;
+            // print("vida ya curada "+vida);
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("pilar"))
+        {
+            vida = vida - 10;
+            print("vida quitada:" + vida);
+        }
+                else if (collision.gameObject.CompareTag("cuerpo"))
+        {
+            vida = vida - 10;
+            print("vida quitada:" + vida);
+        }
+    }
+
+    void velociad()
+    {
+        counting = true;
+    }
 
     // void OnCollisionExit(Collision collision)
     // {
@@ -136,4 +156,3 @@ public class CarNPC : MonoBehaviour
     //     }
     // }
 }
-

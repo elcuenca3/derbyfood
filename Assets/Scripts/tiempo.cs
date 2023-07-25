@@ -31,6 +31,7 @@ public class tiempo : MonoBehaviour
     private void CambiarEscena()
     {
         // Cambiar a la siguiente escena
+
         SceneManager.LoadScene("Game_over");
     }
 }

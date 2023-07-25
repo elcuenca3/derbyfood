@@ -113,6 +113,11 @@ public class CarController : MonoBehaviour
             vida = vida - 10;
             print("vida quitada:" + vida);
         }
+        else if (collision.gameObject.CompareTag("cuerpo"))
+        {
+            vida = vida - 10;
+            print("vida quitada: npc" + vida);
+        }
     }
 
     void velociad()
