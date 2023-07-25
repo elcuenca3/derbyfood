@@ -28,7 +28,7 @@ public class CarController : MonoBehaviour
 
     private bool counting = false;
 
-    private int vida = 100;
+    public int vida = 50;
     public Slider healthBar;
 
     void Start()
@@ -82,6 +82,7 @@ public class CarController : MonoBehaviour
             * MoveForce.magnitude;
         // print(tiempoActual);
         healthBar.value = vida;
+    
     }
 
     void OnCollisionEnter(Collision collision)
@@ -104,19 +105,25 @@ public class CarController : MonoBehaviour
         else if (collision.gameObject.CompareTag("powervida"))
         {
             print("vida OBTENIDA ");
-            vida = vida + 10;
+            vida = vida + 5;
             // print("vida ya curada "+vida);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("pilar"))
         {
-            vida = vida - 10;
+            vida = vida - 5;
             print("vida quitada:" + vida);
         }
         else if (collision.gameObject.CompareTag("cuerpo"))
         {
-            vida = vida - 10;
+            vida = vida - 5;
             print("vida quitada: npc" + vida);
+
+            if (vida <= 0)
+            {
+                print("se destruyo" + collision.gameObject);
+                Destroy(collision.gameObject);
+            }
         }
     }
 
@@ -124,7 +131,6 @@ public class CarController : MonoBehaviour
     {
         counting = true;
     }
-    
 
     void OnCollisionExit(Collision collision)
     {

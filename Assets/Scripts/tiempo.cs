@@ -20,7 +20,7 @@ public class tiempo : MonoBehaviour
     void Update()
     {
         tiempoActual -= Time.deltaTime;
-        texto.text = "" + tiempoActual.ToString("F2");
+        texto.text = "" + tiempoActual.ToString("F0");
         print(tiempoActual);
         if (tiempoActual <= 0f)
         {
